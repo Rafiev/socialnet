@@ -6,6 +6,7 @@ class Profile(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=55)
     description = models.TextField(null=True, blank=True)
+    photo = models.ImageField('Photo', null=True, blank=False, upload_to='profile_images/')
 
     def __str__(self):
         return self.nickname
@@ -20,8 +21,9 @@ class Post(models.Model):
     photo = models.ImageField('Photo', null=True, blank=False, upload_to="post_images/")
     status = models.CharField('Status', max_length=200, choices=STATUS_CHOICES, default="Posted")
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True,
-                             verbose_name='Автор поста', related_name='posts')
-    category = models.ManyToManyField(to='Category', blank=True, verbose_name='котегории')
+                             verbose_name='Post author', related_name='posts')
+    category = models.ManyToManyField(to='Category', blank=True, verbose_name='categories')
+    likes = models.IntegerField('Like', default=0)
 
     def __str__(self):
         return f'{self.name} - {self.status}'
@@ -66,3 +68,30 @@ class Comment(models.Model):
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
         ordering = ['created_at']
+
+
+class Short(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=False,
+                             verbose_name='Author', related_name='short')
+    video = models.FileField('Video', upload_to='video_post/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    views_qty = models.PositiveIntegerField('Views', default=0)
+
+    class Meta:
+        verbose_name = 'Short'
+        verbose_name_plural = 'Shorts'
+
+    def __str__(self):
+        return f'{self.video} - {self.created_at}'
+
+
+class SavedPosts(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    post = models.ManyToManyField(Post, verbose_name='saved post', related_name='saved_posts')
+
+    class Meta:
+        verbose_name = 'saved post'
+        verbose_name_plural = 'saved posts'
+
+    def __str__(self):
+        return f'{self.user}'

@@ -1,0 +1,13 @@
+<h2>Post</h2>
+<div>
+    Header: {{ post.name }}
+</div>
+    {% if post.photo %}
+        <img src="{{ post.photo.url }}" height="200px">
+    {% endif %}
+<div>
+    Description: {{ post.description }}
+</div>
+<div>
+    Likes qty: {{ post.likes }}
+</div>

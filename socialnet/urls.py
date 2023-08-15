@@ -16,13 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import homepage
+from core import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', homepage)
+    path('', views.homepage),
+    path('posts/<int:id>', views.post_detail),
+    path('profile/<int:id>', views.profile_detail, name='profile'),
+    path('shorts/', views.shorts, name='shorts-list'),
+    path('short/<int:id>', views.short_info, name='shorts-info'),
+    path('saved_posts/', views.saved_posts, name='saved-posts'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
