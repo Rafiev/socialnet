@@ -28,7 +28,7 @@ urlpatterns = [
     path('shorts/', views.shorts, name='shorts-list'),
     path('short/<int:id>', views.short_info, name='shorts-info'),
     path('saved_posts/', views.saved_posts, name='saved-posts'),
-
+    path('<int:user_id>/', views.user_posts, name='user-posts')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

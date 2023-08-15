@@ -1,5 +1,10 @@
 <h2>Post</h2>
 <div>
+    <a href="{% url 'user-posts' post.user.id %}">
+        Author: {{ post.user.username }}
+   </a>
+</div>
+<div>
     Header: {{ post.name }}
 </div>
     {% if post.photo %}
