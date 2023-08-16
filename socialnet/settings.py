@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #libs
+    'django_bootstrap5',
 
     #apps
     'core',
