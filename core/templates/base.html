@@ -32,9 +32,12 @@
                             <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
                         </li>
                     {% endif %}
+                      <li class="nav=item">
+                          <a class="nav-link" href="{% url 'add-post' %}">New post</a>
+                      </li>
                   </ul>
                   <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Search">
+                    <input class="form-control me-2" type="text" placeholder="Enter your request">
                     <button class="btn btn-primary" type="button">Search</button>
                   </form>
                 </div>
