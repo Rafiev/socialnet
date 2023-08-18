@@ -19,12 +19,28 @@
 <div>
     Likes qty: {{ post.likes }}
 </div>
+<div>
+    {% if post in request.user.savedposts.post.all %}
+        <div class="alert alert-success">Already in saved</div>
+    {% else %}
+        <form action="/add-saved/" method="POST">
+            {% csrf_token %}
+            <input type="number" name="post_id" value="{{ post.id }}" hidden>
+            <button class="btn btn-dark">Save</button>
+        </form>
+    {% endif %}
+</div>
 <br>
 <h3>Add comment</h3>
 <form method="POST">
     {% csrf_token %}
     {% bootstrap_form comment_form %}
     <button class="btn btn-info">Add</button>
-
 </form>
+<h3>Comments</h3>
+{% for comment in comments %}
+    <div>
+        <b>{{ comment.created_by.username }}</b>: {{ comment.comment_text }}
+    </div>
+{% endfor %}
 {% endblock %}

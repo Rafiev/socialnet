@@ -1,7 +1,16 @@
-<h2>Short №{{ short.id }}</h2>
+{% extends 'base.html' %}
+{% block content %}
 <div>
-    Автор: {{ short.user.username }}
+    Author: {{ short.user.username }}
 </div>
 <div>
-    Кол-во просмотров: {{ short.views_qty }}
+    <video width="200" controls src="{{ short.video.url }}">
+    </video>
 </div>
+<div>
+    Views: {{ short.views_qty }}
+</div>
+<div>
+    Added at {{ short.created_at }}
+</div>
+{% endblock %}

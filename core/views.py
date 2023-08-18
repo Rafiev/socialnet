@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import Post, Profile, Short
+from .models import Post, Profile, Short, Comment, SavedPosts
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from . import forms
 
 
@@ -17,6 +18,8 @@ def post_detail(request, id):
     context['post'] = post_object
     comment_form = forms.CommentForm()
     context['comment_form'] = comment_form
+    comments_list = Comment.objects.filter(post=post_object)
+    context['comments'] = comments_list
     if request.method == 'GET':
         return render(request, 'post_info.html', context)
     elif request.method == 'POST':
@@ -42,7 +45,7 @@ def shorts(request):
 
 def short_info(request, id):
     context = {"short": Short.objects.get(id=id)}
-    return render(request, "short_info.html", context)
+    return render(request, "shorts_info.html", context)
 
 
 def saved_posts(request):
@@ -71,3 +74,23 @@ def create_post(request):
         new_post.photo = request.FILES['photo']
         new_post.save()
         return render(request, 'home.html')
+
+
+@login_required(login_url='/users/sign_in/')
+def add_short(request):
+    if request.method == 'GET':
+        return render(request, 'short_form.html')
+    elif request.method == 'POST':
+        new_short_object = Short(user=request.user, video=request.FILES['video_file'],)
+        new_short_object.save()
+        return redirect('shorts-info', id=new_short_object.id)
+
+
+def add_saved(request):
+    if request.method == "POST":
+        post_id = request.POST['post_id']
+        post_object = Post.objects.get(id=post_id)
+        saved_post, _ = SavedPosts.objects.get_or_create(user=request.user)
+        saved_post.post.add(post_object)
+        saved_post.save()
+        return redirect('/saved_posts/')

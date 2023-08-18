@@ -31,10 +31,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
                         </li>
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'add-post' %}">New post</a>
+                        </li>
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'add-short' %}">New short</a>
+                        </li>
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'sign-out' %}">Sign out</a>
+                        </li>
+                      {% else %}
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'registration' %}">Sign up</a>
+                        </li>
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'sign-in' %}">Log in</a>
+                        </li>
                     {% endif %}
-                      <li class="nav=item">
-                          <a class="nav-link" href="{% url 'add-post' %}">New post</a>
-                      </li>
                   </ul>
                   <form class="d-flex">
                     <input class="form-control me-2" type="text" placeholder="Enter your request">
@@ -45,11 +58,25 @@
         </nav>
         <div class="row">
             <div class="col-2">
-                <div>Home</div>
-                <div>Search</div>
-                <div>Interesting</div>
+                <div>
+                    {% if request.user.is_authenticated %}
+                        Hello {{ request.user.username }}
+                    {% else %}
+                        Log in
+                    {% endif %}
+                </div>
+                <div class="my-focus">Home</div>
+                <div class="my-focus">Search</div>
+                <div class="my-focus">Interesting</div>
             </div>
             <div class="col-10">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 {% block content %}
 
                 {% endblock %}
