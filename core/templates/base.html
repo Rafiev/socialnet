@@ -49,8 +49,9 @@
                         </li>
                     {% endif %}
                   </ul>
-                  <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Enter your request">
+                  <form class="d-flex" action="/search-result" method="GET">
+                    <input class="form-control me-2" type="text" placeholder="Enter your request" name="key_word">
+                      <a>
                     <button class="btn btn-primary" type="button">Search</button>
                   </form>
                 </div>
@@ -65,9 +66,26 @@
                         Log in
                     {% endif %}
                 </div>
-                <div class="my-focus">Home</div>
-                <div class="my-focus">Search</div>
+                <div class="my-focus">
+                    <a href="/">
+                        Home
+                    </a>
+                </div>
                 <div class="my-focus">Interesting</div>
+                <div class="my-focus">
+                    <a href="{% url 'shorts-list' %}">
+                        Shorts
+                    </a>
+                </div>
+                {% if request.user.is_authenticated %}
+                    <div class="my-focus">Direct</div>
+                    <div class="my-focus">Notifications</div>
+                    <div class="my-focus">
+                        <a href="{% url 'profile' request.user.profile.id  %}">
+                            Profile
+                        </a>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-10">
                 {% if messages %}

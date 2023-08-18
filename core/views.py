@@ -3,12 +3,15 @@ from .models import Post, Profile, Short, Comment, SavedPosts
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from . import forms
+from django.db.models import Q
 
 
 def homepage(request):
-    context = {'name': 'Emirlan'}
+    context = {}
     posts_list = Post.objects.all()
     context['posts'] = posts_list
+    shorts_list = Short.objects.all()
+    context["shorts"] = shorts_list
     return render(request, 'home.html', context)
 
 
@@ -94,3 +97,14 @@ def add_saved(request):
         saved_post.post.add(post_object)
         saved_post.save()
         return redirect('/saved_posts/')
+
+
+# def search(request):
+#     return render(request, 'search.html')
+
+
+def search_result(request):
+    key_word = request.GET["key_word"]
+    posts = Post.objects.filter(Q(name__icontains=key_word) | Q(description__icontains=key_word))
+    context = {"posts": posts}
+    return render(request, 'home.html', context)

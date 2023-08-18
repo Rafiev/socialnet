@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),
-    path('posts/<int:id>/', views.post_detail),
+    path('posts/<int:id>/', views.post_detail, name='post-detail'),
     path('profile/<int:id>/', views.profile_detail, name='profile'),
     path('shorts/', views.shorts, name='shorts-list'),
     path('short/<int:id>/', views.short_info, name='shorts-info'),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('add_post/', views.create_post, name='add-post'),
     path('add_short/', views.add_short, name='add-short'),
     path('add-saved/', views.add_saved, name='add-saved'),
+    # path('search/', views.search, name='search'),
+    path('search-result', views.search_result, name='search-result'),
     path('users/', include('userapp.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
