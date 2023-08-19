@@ -20,6 +20,12 @@
     Likes qty: {{ post.likes }}
 </div>
 <div>
+    <form method="POST">
+        {% csrf_token %}
+        <button name="like">Like</button>
+    </form>
+</div>
+<div>
     {% if post in request.user.savedposts.post.all %}
         <div class="alert alert-success">Already in saved</div>
     {% else %}

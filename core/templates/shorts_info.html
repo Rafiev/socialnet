@@ -11,6 +11,9 @@
     Views: {{ short.views_qty }}
 </div>
 <div>
+    Unique Views: {{ short.viewed_users.count }}
+</div>
+<div>
     Added at {{ short.created_at }}
 </div>
 {% endblock %}

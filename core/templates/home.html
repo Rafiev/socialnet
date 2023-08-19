@@ -21,7 +21,7 @@
     {% for post in posts %}
         <div>
             <a href="{% url 'user-posts' post.user.id %}">
-                {{ post.creator.username }}
+                {{ post.user.username }}
             </a>
         </div>
         <div>

@@ -28,6 +28,15 @@
                       <a class="nav-link" href="{% url 'shorts-list' %}">Shorts</a>
                     </li>
                     {% if request.user.is_authenticated %}
+                        {% if request.user.profile %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'profile' request.user.profile.id %}">Profile</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'add-profile' %}">Add profile</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
                         </li>
@@ -49,7 +58,7 @@
                         </li>
                     {% endif %}
                   </ul>
-                  <form class="d-flex" action="/search-result" method="GET">
+                  <form class="d-flex" action="/posts/search-result" method="GET">
                     <input class="form-control me-2" type="text" placeholder="Enter your request" name="key_word">
                       <a>
                     <button class="btn btn-primary" type="button">Search</button>
@@ -79,21 +88,31 @@
                 </div>
                 {% if request.user.is_authenticated %}
                     <div class="my-focus">Direct</div>
-                    <div class="my-focus">Notifications</div>
                     <div class="my-focus">
-                        <a href="{% url 'profile' request.user.profile.id  %}">
-                            Profile
+                        <a href="{% url 'notifications' %}">
+                            Notifications - {{ request.user.notification_set.count }}
                         </a>
                     </div>
+                {% endif %}
+                {% if request.user.profile %}
+                        <div class="my-focus">
+                            <a href="{% url 'profile' request.user.profile.id %}">Profile</a>
+                        </div>
+                {% else %}
+                        <div class="my-focus">
+                            <a href="{% url 'add-profile' %}">Add profile</a>
+                        </div>
                 {% endif %}
             </div>
             <div class="col-10">
                 {% if messages %}
-                    <ul class="messages">
+                    <div class="massages">
                         {% for message in messages %}
-                            <li>{{ message }}</li>
+                        <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+                            {{ message }}
+                        </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 {% endif %}
                 {% block content %}
 

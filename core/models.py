@@ -7,6 +7,10 @@ class Profile(models.Model):
     nickname = models.CharField(max_length=55)
     description = models.TextField(null=True, blank=True)
     photo = models.ImageField('Photo', null=True, blank=False, upload_to='profile_images/')
+    subscribers = models.ManyToManyField(to=User, related_name='followed_profile', blank=True)
+    link_fb = models.CharField(max_length=255, null=True, blank=True)
+    whatsapp = models.CharField(max_length=30, null=True, blank=True)
+    telegram = models.CharField(max_length=55, null=True, blank=True)
 
     def __str__(self):
         return self.nickname
@@ -77,6 +81,7 @@ class Short(models.Model):
     video = models.FileField('Video', upload_to='video_post/')
     created_at = models.DateTimeField(auto_now_add=True)
     views_qty = models.PositiveIntegerField('Views', default=0)
+    viewed_users = models.ManyToManyField(to=User, blank=True, related_name='viewed_shorts')
 
     class Meta:
         verbose_name = 'Short'
@@ -96,3 +101,12 @@ class SavedPosts(models.Model):
 
     def __str__(self):
         return f'{self.user}'
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.PROTECT)
+    text = models.CharField(max_length=255)
+    is_showed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
