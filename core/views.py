@@ -68,7 +68,20 @@ def short_info(request, id):
     short.viewed_users.add(request.user)
     short.save()
     context = {"short": short}
-    return render(request, "short_info.html", context)
+    return render(request, "shorts_info.html", context)
+
+
+def update_short(request, id):
+    short = Short.objects.get(id=id)
+    if request.method == "POST":
+        new_description = request.POST["description"]
+        short.description = new_description
+        short.save()
+        return redirect(short_info, id=short.id)
+
+    context = {'short': short}
+    return render(request, 'update_short.html', context)
+
 
 def saved_posts(request):
     posts = Post.objects.filter(saved_posts__user=request.user)
@@ -88,14 +101,57 @@ def create_post(request):
         return render(request, 'create_post_form.html')
     elif request.method == 'POST':
         data = request.POST
-        print(data)
         new_post = Post()
         new_post.name = data['post_name']
         new_post.description = data['description']
         new_post.user = request.user
         new_post.photo = request.FILES['photo']
         new_post.save()
-        return render(request, 'home.html')
+        return redirect(homepage)
+
+
+def add_post_form(request):
+    if request.method == "POST":
+        post_form = forms.PostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            post_object = post_form.save(commit=False)
+            post_object.user = request.user
+            post_object.save()
+            return redirect(post_detail, id=post_object.id)
+        else:
+            messages.warning(request, f"Form doesn't valid: {post_form.errors}")
+
+    post_form = forms.PostForm()
+    context = {"post_form": post_form}
+    return render(request, 'create_post_django_form.html', context)
+
+
+def update_post(request, id):
+    context = {}
+    post_object = Post.objects.get(id=id)
+    if request.user != post_object.user:
+        return redirect(homepage)
+    if request.method == "POST":
+        post_form = forms.PostForm(data=request.POST, files=request.FILES, instance=post_object)
+        if post_form.is_valid():
+            post_form.save()
+            return redirect(post_detail, id=post_object.id)
+        else:
+            messages.warning(request, "Form doesn't valid")
+            context["post_form"] = post_form
+            return render(request, 'update_post.html', context)
+    post_form = forms.PostForm(instance=post_object)
+    context["post_form"] = post_form
+    return render(request, 'update_post.html', context)
+
+
+def delete_post(request, id):
+    post = Post.objects.get(id=id)
+
+    if request.user != post.user:
+        return redirect(homepage)
+    post.delete()
+    return redirect(user_posts, user_id=request.user.id)
 
 
 @login_required(login_url='/users/sign_in/')

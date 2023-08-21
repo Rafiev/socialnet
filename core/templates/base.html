@@ -41,10 +41,16 @@
                             <a class="nav-link" href="{% url 'saved-posts' %}">SavedPosts</a>
                         </li>
                         <li class="nav=item">
+                            <a class="nav-link" href="{% url 'add-post-form' %}">!New post!</a>
+                        </li>
+                        <li class="nav=item">
                             <a class="nav-link" href="{% url 'add-post' %}">New post</a>
                         </li>
                         <li class="nav=item">
                             <a class="nav-link" href="{% url 'add-short' %}">New short</a>
+                        </li>
+                        <li class="nav=item">
+                            <a class="nav-link" href="{% url 'notifications' %}">Notifications {{ request.user.notification_set.count }}</a>
                         </li>
                         <li class="nav=item">
                             <a class="nav-link" href="{% url 'sign-out' %}">Sign out</a>
@@ -62,6 +68,7 @@
                     <input class="form-control me-2" type="text" placeholder="Enter your request" name="key_word">
                       <a>
                     <button class="btn btn-primary" type="button">Search</button>
+                      </a>
                   </form>
                 </div>
               </div>
@@ -117,7 +124,7 @@
                 {% block content %}
 
                 {% endblock %}
-            <div/>
+            </div>
         </div>
 </body>
 </html>

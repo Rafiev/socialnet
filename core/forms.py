@@ -12,3 +12,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = ['nickname', 'description', 'link_fb', 'whatsapp', 'telegram', 'photo']
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = ['name', 'photo']

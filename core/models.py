@@ -20,8 +20,8 @@ class Post(models.Model):
     STATUS_CHOICES = (('Posted', 'Posted'),
                       ('Unposted', 'Unposted'))
 
-    name = models.CharField('Header', max_length=80)
-    description = models.TextField('Description', null=True)
+    name = models.CharField('Header', max_length=80, null=True, blank=True)
+    description = models.TextField('Description', null=True, blank=True)
     photo = models.ImageField('Photo', null=True, blank=False, upload_to="post_images/")
     status = models.CharField('Status', max_length=200, choices=STATUS_CHOICES, default="Posted")
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True,
@@ -82,6 +82,7 @@ class Short(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     views_qty = models.PositiveIntegerField('Views', default=0)
     viewed_users = models.ManyToManyField(to=User, blank=True, related_name='viewed_shorts')
+    description = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Short'
