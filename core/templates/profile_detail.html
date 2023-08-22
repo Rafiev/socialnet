@@ -6,7 +6,11 @@
     </div>
     <div>{{ profile.description }}</div>
       <div>Subscribers: {{ profile.subscribers.count }}</div>
-
+    <h3>
+        <a href="{% url 'subscriptions' profile.user.id %}">
+            Subscriptions
+        </a>
+    </h3>
     <h3>List of subscribers:</h3>
     <div>
         {% for user in profile.subscribers.all %}

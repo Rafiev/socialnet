@@ -17,7 +17,9 @@ urlpatterns = [
     path('update-post/<int:id>/', views.update_post, name='update-post'),
     path('delete-post/<int:id>/', views.delete_post, name='delete-post'),
     path('subscribe/<int:profile_id>/', views.subscribe, name='subscribe'),
+    path('subscriptions/<int:user_id>/', views.SubscriptionsView.as_view(), name='subscriptions'),
     # path('search/', views.search, name='search'),
     path('search-result/', views.search_result, name='search-result'),
     path('notifications/', views.notifications, name='notifications'),
+    path('comment-delete/<int:id>/', views.comment_delete, name='comment-delete'),
 ]

@@ -55,6 +55,11 @@
 {% for comment in comments %}
     <div>
         <b>{{ comment.created_by.username }}</b>: {{ comment.comment_text }}
+        {% if request.user == comment.created_by or request.user == post.user %}
+            <a href="{% url 'comment-delete' comment.id %}">
+                Delete
+            </a>
+        {% endif %}
     </div>
 {% endfor %}
 {% endblock %}

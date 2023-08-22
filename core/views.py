@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-
+from django.views import View
 from .forms import CommentForm, ProfileForm
 from .models import Post, Profile, Short, Comment, SavedPosts, Notification
 from django.contrib.auth.models import User
@@ -44,8 +44,7 @@ def post_detail(request, id):
                 new_comment.post = post_object
                 new_comment.save()
 
-                Notification.objects.create(user=post_object.creator,
-                                            text=f"{request.user.profile.nickname} commented your post")
+                Notification.objects.create(user=post_object.user, text=f"{request.user.profile.nickname} commented your post")
                 return redirect(post_detail, id=id)
 
 
@@ -225,3 +224,24 @@ def add_profile(request):
             return HttpResponse("Not valid")
 
     return render(request, 'add_profile.html', context)
+
+
+def comment_delete(request, id):
+    comment = Comment.objects.get(id=id)
+
+    if request.user != comment.created_by:
+        messages.warning(request, "You haven't got permission to do it")
+        return redirect(post_detail, id=comment.post.id)
+
+    comment.delete()
+    return redirect(post_detail, id=comment.post.id)
+
+
+class SubscriptionsView(View):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        user_object = User.objects.get(id=kwargs['user_id'])
+        profiles_list = user_object.followed_profile.all()
+        context = {"profiles_list": profiles_list}
+        return render(request, 'subscriptions.html', context)

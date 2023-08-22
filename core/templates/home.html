@@ -1,27 +1,11 @@
 {% extends 'base.html' %}
-
 {% block content %}
-    <div class="row">
-        {% for short in shorts %}
-            <div class="col">
-                <a href="{% url 'shorts-info' short.id %}">
-                    <div>
-                        <video
-                            class="custom-circle"
-                            width="100px"
-                            src="{{ short.video.url }}">
-                        </video>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-    <hr>
+<div class="container p-5 my-5 bg-dark text-white">
     <h2>Posts</h2>
     {% for post in posts %}
         <div>
             <a href="{% url 'user-posts' post.user.id %}">
-                {{ post.user.username }}
+                <dl>{{ post.user.username }}</dl>
             </a>
         </div>
         <div>
@@ -33,4 +17,5 @@
         </div>
         <hr>
     {% endfor %}
+</div>
 {% endblock %}

@@ -73,58 +73,8 @@
                 </div>
               </div>
         </nav>
-        <div class="row">
-            <div class="col-2">
-                <div>
-                    {% if request.user.is_authenticated %}
-                        Hello {{ request.user.username }}
-                    {% else %}
-                        Log in
-                    {% endif %}
-                </div>
-                <div class="my-focus">
-                    <a href="/">
-                        Home
-                    </a>
-                </div>
-                <div class="my-focus">Interesting</div>
-                <div class="my-focus">
-                    <a href="{% url 'shorts-list' %}">
-                        Shorts
-                    </a>
-                </div>
-                {% if request.user.is_authenticated %}
-                    <div class="my-focus">Direct</div>
-                    <div class="my-focus">
-                        <a href="{% url 'notifications' %}">
-                            Notifications - {{ request.user.notification_set.count }}
-                        </a>
-                    </div>
-                {% endif %}
-                {% if request.user.profile %}
-                        <div class="my-focus">
-                            <a href="{% url 'profile' request.user.profile.id %}">Profile</a>
-                        </div>
-                {% else %}
-                        <div class="my-focus">
-                            <a href="{% url 'add-profile' %}">Add profile</a>
-                        </div>
-                {% endif %}
-            </div>
-            <div class="col-10">
-                {% if messages %}
-                    <div class="massages">
-                        {% for message in messages %}
-                        <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-                            {{ message }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
                 {% block content %}
 
                 {% endblock %}
-            </div>
-        </div>
 </body>
 </html>
